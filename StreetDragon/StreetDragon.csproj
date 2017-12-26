@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config.cs" />
     <Compile Include="Modules\im.cs" />
     <Compile Include="Modules\Cele.cs" />
     <Compile Include="Modules\Commissions.cs" />

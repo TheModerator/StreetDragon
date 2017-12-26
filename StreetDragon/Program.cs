@@ -38,7 +38,7 @@ namespace StreetDragon
                 .AddSingleton(_commands)
                 .BuildServiceProvider();
 
-            string botToken = "MzkwOTcwNzQ3OTM5NzE3MTMx.DRSB1A.vYRYA1EuaCH4b2U3la4R7T6a9k4";
+           
 
             //event subscription
             _client.Log += Log;
@@ -50,7 +50,7 @@ namespace StreetDragon
 
             await RegisterCommandsAsync();
 
-            await _client.LoginAsync(TokenType.Bot, botToken);
+            await _client.LoginAsync(TokenType.Bot, Config.DISCORD_PRIVATE_KEY);
 
             await _client.StartAsync();
 
