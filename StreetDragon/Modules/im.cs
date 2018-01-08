@@ -112,13 +112,6 @@ namespace StreetDragon.Modules
                     try
                     {
                         String[] newWord = model.GetMatches(sentence.Trim()).ToArray();
-                        /*
-                         
-                                 .Where(a =>
-                                     a != model.GetPrepadGram()
-                                     && a != model.GetTerminatorGram()
-                                 )
-                                 */
                         Double len = Convert.ToDouble(newWord.Length - 1);
                         Double rnd = Convert.ToDouble(rnd1.NextDouble());
                         Double decision = Math.Floor(rnd * len);
