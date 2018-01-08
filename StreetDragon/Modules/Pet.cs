@@ -20,9 +20,6 @@ namespace StreetDragon.Modules
             }
             else
                 await ReplyAsync($"*Pets {user.Mention}~!*");
-
         }
-
-
     }
 }
