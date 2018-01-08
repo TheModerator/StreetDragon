@@ -16,11 +16,7 @@ namespace StreetDragon.Modules
         [Summary("Does fancy science magic to turn into the specified customer!")]
         public async Task Immitate(SocketGuildUser user = null, String starter = "")
         {
-            if(user == null)
-            {
-                await ReplyAsync("Stop trying to fuxk1ng crash me");
-                return;
-            }
+           
             var model = new StringMarkov(2);
             //IEnumerable<IMessage> messages =  await Context.Channel.GetMessagesAsync(100000).Flatten();
             IAsyncEnumerable<IReadOnlyCollection<IMessage>> messages;
@@ -59,16 +55,31 @@ namespace StreetDragon.Modules
 
 
                 Program.MessageCache[Context.Channel.Id].AddRange(tempCache);
-
-               IMessage[] pool = Program.MessageCache[Context.Channel.Id].Where(msg => msg.Author.Id == user.Id).ToArray();
-
                 List<String> messageContents = new List<String>();
-                foreach (var msg in pool.Where(msg => msg.Author.Id == user.Id))
+                String nickname;
+                if (user == null)
                 {
-                    messageContents.Add(msg.Content.Replace("_", "").Replace("*", "").Replace("-", "").Trim(' '));
+                    IMessage[] pool = Program.MessageCache[Context.Channel.Id].ToArray();
+
+                    nickname = "The Café";
+                    foreach (var msg in pool)
+                    {
+                        messageContents.Add(msg.Content.Replace("_", "").Replace("*", "").Replace("-", "").Trim(' '));
+                    }
                 }
+                else
+                {
+                    nickname = user.Nickname;
+                    IMessage[] pool = Program.MessageCache[Context.Channel.Id].Where(msg => msg.Author.Id == user.Id).ToArray();
+                    
+                    foreach (var msg in pool.Where(msg => msg.Author.Id == user.Id))
+                    {
+                        messageContents.Add(msg.Content.Replace("_", "").Replace("*", "").Replace("-", "").Trim(' '));
+                    }
+                }
+              
                
-                RespondWithAnswer(messageContents.ToArray(), starter, user.Nickname);
+                RespondWithAnswer(messageContents.ToArray(), starter, nickname);
 
 
             });
