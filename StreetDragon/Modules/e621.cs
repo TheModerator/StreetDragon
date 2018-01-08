@@ -60,10 +60,30 @@ namespace StreetDragon.Modules
                     }
                 }
             }
+            catch (WebException e)
+            {
+                if (e.Status == WebExceptionStatus.Timeout)
+                {
+                    if (Context.Channel.IsNsfw)
+                    {
+                        await ReplyAsync("I cannot cope. https://static1.e621.net/data/bc/2a/bc2ac1ff9142544726e285c84ffd33fb.jpg");
+                    }
+                    else
+                    {
+                        await ReplyAsync("I know you wanted that image, but e621 is being too slow right now... https://static1.e621.net/data/sample/80/da/80dad8cdf18cd118c44780b7c6ab73e1.jpg");
+                    }
+                }
+                else
+                {
+                        await ReplyAsync(e.Status.ToString() + " https://static1.e621.net/data/f9/1f/f91f92ac563c3bbe4e569d68a46dfafe.png");
+                }
+            }
+           
             catch (Exception ex)
             {
-                await ReplyAsync("``` \r\n FUCKED UP - " + ex.Message + "\r\n Stack: \r\n" + ex.StackTrace);
+                await ReplyAsync("``` \r\n FUCKED UP - " + ex.Message + "\r\n Stack: \r\n" + ex.StackTrace + "```");
             }
+           
             
 
 
@@ -122,6 +142,7 @@ namespace StreetDragon.Modules
                 request.AutomaticDecompression = DecompressionMethods.GZip;
                 DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<E6_SHOW_RESP>));
                 request.UserAgent ="StreetDragon 0.666 (Discord Bot)";
+                request.Timeout = 2000;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 List<E6_SHOW_RESP> p2 = (List<E6_SHOW_RESP>)ser.ReadObject(stream);
