@@ -22,8 +22,8 @@ namespace StreetDragon.Modules
         {
             string tags = String.Join(" ", args);
             Random rnd1 = new Random();
-            if (!Context.Channel.IsNsfw) tags = tags + " rating:safe";
-            else tags = tags + "rating:explicit";
+            if (!Context.Channel.IsNsfw) { tags = tags + " rating:safe"; }
+            else { tags = tags + "rating:explicit"; }
             try
             {
                 List<E6_SHOW_RESP> Results = SearchForPosts(tags);
