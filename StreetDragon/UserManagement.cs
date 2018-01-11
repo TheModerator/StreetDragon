@@ -15,7 +15,7 @@ namespace StreetDragon
         public string username;
         public int xp = 0;
         public int lvl = 0;
-        public int expmax = 100;
+        public int xpmax = 100;
         public int cutecoins = 0;
 
         public User(ulong userID, string username)
@@ -28,7 +28,7 @@ namespace StreetDragon
 
         public void gainCoins()
         {
-            this.expmax = 100 * lvl;
+            this.xpmax = 100 * lvl;
             this.cutecoins += 15;
         }
 
