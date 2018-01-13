@@ -14,83 +14,166 @@ namespace StreetDragon.Modules
     {
         [Command("im"), Alias("IAm")]
         [Summary("Does fancy science magic to turn into the specified customer!")]
-        public async Task Immitate(SocketGuildUser user = null, String starter = "")
+        public async Task Immitate(SocketGuildUser user = null, SocketChannel selectedChannel = null, String starter = "")
         {
-           
+            try { 
             var model = new StringMarkov(2);
             //IEnumerable<IMessage> messages =  await Context.Channel.GetMessagesAsync(100000).Flatten();
+
+            // --------------------------- UPDATE CACHE WITH ALL CHANNELS ---------------------------
+            // Yeah I know we might not NEED all channels, but hey, at some point we will
+
             IAsyncEnumerable<IReadOnlyCollection<IMessage>> messages;
-            if (!Program.MessageCache.ContainsKey(Context.Channel.Id))
+            Task[] taskList = new Task[Context.Guild.Channels.Count];
+
+            Boolean[] dlDone = new Boolean[Context.Guild.Channels.Count ];
+            int didx = 0;
+            while(didx < Context.Guild.Channels.Count - 1)
             {
-                messages = Context.Channel.GetMessagesAsync(50000, CacheMode.AllowDownload);
-                Program.MessageCache.Add(Context.Channel.Id, new List<IMessage>());
+                dlDone[didx] = false;
+                didx += 1;
             }
-            else{
-                messages = Context.Channel.GetMessagesAsync(Program.MessageCache[Context.Channel.Id].Last(),Direction.After,10000);
-            }
+            List<IMessage>[] tempCache = new List<IMessage>[Context.Guild.Channels.Count ];
+            int idx = 0;
+            foreach (SocketGuildChannel CGC in Context.Guild.Channels) {
 
-
-            // Donwloaded going BACK in time
-
-
-            List<IMessage> tempCache = new List<IMessage>();
-
-            var evt = messages.ForEachAsync(async msglist =>
-            {
-                foreach (var msg in msglist)
+                ISocketMessageChannel Channel = CGC as ISocketMessageChannel;
+                tempCache[idx] = new List<IMessage>();
+                if (Channel == null)
                 {
-                    if (msg.Content.StartsWith("!im")) continue;
-                    if (msg.Attachments.Count > 0) continue;
-                    tempCache.Add(msg);
-                    Console.WriteLine(tempCache.Count + ". " + msg);
+                    dlDone[idx] = true;
+                    idx += 1;
+                    continue;
                 }
-            });
 
-   
-
-
-            evt.ContinueWith(async actn =>
-            {
-                tempCache.Reverse();
-
-
-                Program.MessageCache[Context.Channel.Id].AddRange(tempCache);
-                List<String> messageContents = new List<String>();
-                String nickname;
-                if (user == null)
+                Console.WriteLine("Downloading messages from " + Channel.Name);
+                if (!Program.MessageCache.ContainsKey(Channel.Id)){
+                    messages = Channel.GetMessagesAsync(50000, CacheMode.AllowDownload);
+                    Program.MessageCache.Add(Channel.Id, new List<IMessage>());
+                    Console.WriteLine("[" + Channel.Name + "] Fresh download");
+                }
+                else {
+                    messages = Channel.GetMessagesAsync(Program.MessageCache[Channel.Id].Last(), Direction.After, 10000);
+                    Console.WriteLine("[" + Channel.Name + "] Cache update");
+                }
+                Console.WriteLine("[" + Channel.Name + "] - Assigned IDX " + idx);
+                
+                int chIdx = idx;
+                var evt = messages.ForEachAsync(async msglist =>
                 {
-                    IMessage[] pool = Program.MessageCache[Context.Channel.Id].ToArray();
+                    Console.WriteLine("[" + Channel.Name + "] - " + chIdx + " Download Received");
+                    foreach (var msg in msglist)
+                    {
+                        if (msg.Content.StartsWith("!")) continue;
+                        if (msg.Attachments.Count > 0) continue;
+                        tempCache[chIdx].Add(msg);
+                       //  Console.WriteLine(tempCache[chIdx].Count + ". " + msg);
+                    }
+                });
+
+
+
+                evt.ContinueWith(async atsk =>
+                {
+                    Console.WriteLine("[" + Channel.Name + "] - " + chIdx + " Download Finished");
+                    tempCache[chIdx].Reverse();
+                    Program.MessageCache[Channel.Id].AddRange(tempCache[chIdx]);
+                    tempCache[chIdx].Clear();
+                    dlDone[chIdx] = true;
+                    bool allDone = true;
+                    foreach (bool isDone in dlDone)
+                    {
+                       
+                        if(!isDone)
+                        {
+                            allDone = false;
+                        }
+                    }
+                    if (allDone)
+                    {
+                        Console.WriteLine("[" + Channel.Name + "] - " + chIdx + " All downloads done");
+                        await selectMessages(user, selectedChannel, starter);
+                    }
+                });
+                taskList[chIdx] = evt;
+                idx += 1;
+            }
+
+        }catch (Exception ex)
+            {
+                await ReplyAsync("``` \r\n FUCKED UP - " + ex.Message + "\r\n Stack: \r\n" + ex.StackTrace + "```");
+    }
+
+}
+
+        internal async Task selectMessages(SocketGuildUser user, SocketChannel Channel, String starter)
+        {
+            try { 
+            List<String> messageContents = new List<String>();
+            String nickname;
+            if (user == null)
+            {
+
+                    IMessage[] pool;
+                    if (Channel == null)
+                    {
+                        List<IMessage> lst = new List<IMessage>();
+
+                        foreach (var chnl in Program.MessageCache)
+                        {
+                            lst.AddRange(chnl.Value.ToArray());
+                        }
+
+
+                        pool = lst.ToArray();
+                    }
+                    else
+                    {
+                        pool = Program.MessageCache[Channel.Id].ToArray();
+                    }
+
 
                     nickname = "The Café";
-                    foreach (var msg in pool)
-                    {
-                        messageContents.Add(msg.Content.Replace("_", "").Replace("*", "").Replace("-", "").Trim(' '));
-                    }
-                }
-                else
+                foreach (var msg in pool)
                 {
-                    nickname = user.Nickname;
-                    IMessage[] pool = Program.MessageCache[Context.Channel.Id].Where(msg => msg.Author.Id == user.Id).ToArray();
-                    
-                    foreach (var msg in pool.Where(msg => msg.Author.Id == user.Id))
-                    {
-                        messageContents.Add(msg.Content.Replace("_", "").Replace("*", "").Replace("-", "").Trim(' '));
-                    }
+                    messageContents.Add(msg.Content.Trim('_').Trim('-').Trim('~').Trim('*').Trim(' '));
                 }
-              
-               
-                RespondWithAnswer(messageContents.ToArray(), starter, nickname);
+            }
+            else
+            {
+                nickname = user.Username;
+
+                    IMessage[] pool;
+                    if (Channel == null)
+                    {
+                        List<IMessage> lst = new List<IMessage>();
+
+                        foreach(var chnl in Program.MessageCache)
+                        {
+                            lst.AddRange(chnl.Value.Where(msg => msg.Author.Id == user.Id).ToArray());
+                        }
 
 
-            });
+                        pool =lst.ToArray();
+                    }else
+                    {
+                        pool = Program.MessageCache[Channel.Id].Where(msg => msg.Author.Id == user.Id).ToArray();
+                    }
+                foreach (var msg in pool.Where(msg => msg.Author.Id == user.Id))
+                {
+                    messageContents.Add(msg.Content.Trim('_').Trim('-').Trim('~').Trim('*').Trim(' '));
+                }
+            }
 
 
 
-            
+            RespondWithAnswer(messageContents.ToArray(), starter, nickname);
 
-
+        }catch (Exception ex)
+            {
+                await ReplyAsync("``` \r\n FUCKED UP - " + ex.Message + "\r\n Stack: \r\n" + ex.StackTrace + "```");
+            }
         }
-
 
         internal async Task RespondWithAnswer(String[] dataset, String start = "", String user = "")
         {
