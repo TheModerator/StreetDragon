@@ -12,12 +12,34 @@ namespace StreetDragon.Modules
 {
     public class IAm : ModuleBase<SocketCommandContext>
     {
+
+
+        [Command("im"), Alias("IAm")]
+        [Summary("Does fancy science magic to turn into the specified customer!")]
+        public async Task Immitate(SocketGuildUser user = null, String starter = "")
+        {
+            Immitate(user, null, starter);
+        }
+
+        [Command("im"), Alias("IAm")]
+        [Summary("Does fancy science magic to turn into the specified customer!")]
+        public async Task Immitate(SocketChannel selectedChannel = null)
+        {
+            Immitate(null, selectedChannel, "");
+        }
+
+        [Command("im"), Alias("IAm")]
+        [Summary("Does fancy science magic to turn into the specified customer!")]
+        public async Task Immitate(SocketGuildUser user = null, SocketChannel selectedChannel = null)
+        {
+            Immitate(user, selectedChannel, "");
+        }
+
         [Command("im"), Alias("IAm")]
         [Summary("Does fancy science magic to turn into the specified customer!")]
         public async Task Immitate(SocketGuildUser user = null, SocketChannel selectedChannel = null, String starter = "")
         {
             try { 
-            var model = new StringMarkov(2);
             //IEnumerable<IMessage> messages =  await Context.Channel.GetMessagesAsync(100000).Flatten();
 
             // --------------------------- UPDATE CACHE WITH ALL CHANNELS ---------------------------
@@ -175,9 +197,22 @@ namespace StreetDragon.Modules
             }
         }
 
+        public Boolean IsNumber(String value)
+        {
+            return value.All(Char.IsDigit);
+        }
+
         internal async Task RespondWithAnswer(String[] dataset, String start = "", String user = "")
         {
-            StringMarkov model = new StringMarkov(2);
+
+            int chainLength = 2;
+
+            if (IsNumber(start) && start != "")
+            {
+                chainLength = int.Parse(start);
+                start = "";
+            }
+            StringMarkov model = new StringMarkov(chainLength);
             model.Learn(dataset);
             Random rnd1 = new Random();
             String sentence = "";
@@ -198,7 +233,7 @@ namespace StreetDragon.Modules
                         Double len = Convert.ToDouble(newWord.Length - 1);
                         Double rnd = Convert.ToDouble(rnd1.NextDouble());
                         Double decision = Math.Floor(rnd * len);
-                        String selectedWord = newWord[Convert.ToInt16(decision)];
+                        String selectedWord = newWord[Convert.ToInt32(decision)];
                         if (selectedWord == null) break;
                         sentence = sentence + " " + selectedWord;
                         
