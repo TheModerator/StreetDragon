@@ -33,14 +33,14 @@ namespace StreetDragon.Modules
             {
                 x.Name = "Lv :";
                 x.Value = u.lvl;
-                x.IsInline = false;
+                x.IsInline = true;
             });
 
             builder.AddField(x =>
             {
                 x.Name = "XP :";
                 x.Value = u.xp+"/"+u.xpmax;
-                x.IsInline = false;
+                x.IsInline = true;
             });
 
             builder.AddField(x =>

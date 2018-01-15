@@ -4,6 +4,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -57,9 +58,11 @@ namespace StreetDragon
 
         private async Task Exp(SocketMessage arg)
         {
+            Load();
+            Save();
             SocketGuildUser user = (SocketGuildUser)arg.Author;
             Boolean hasFound = false;
-            foreach (var uID in Program.UL.Keys)
+            foreach (var uID in UL.Keys)
             {
                 if (user.Id == uID)
                 {
@@ -80,7 +83,6 @@ namespace StreetDragon
             u.gainCoins();
             if (u.xp >= u.xpmax)
             {
-                Console.WriteLine("Level up!");
                 u.lvl += 1;
                 var channel = arg.Channel;
                 //await channel.SendMessageAsync($"{arg.Author.Mention} leveled up to level " + u.lvl + "!");
@@ -136,6 +138,78 @@ namespace StreetDragon
                 }
             }
         }
+
+        public void Save()
+        {
+            String line;
+
+            string path = @"C:\Users\Gaby\Documents\Test.txt";
+
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
+                using (StreamWriter sw = new StreamWriter(path))
+                {
+                    foreach (var user in UL)
+                    {
+                        sw.WriteLine(user.Key);
+                        sw.WriteLine(user.Value.username);
+                        sw.WriteLine(user.Value.lvl);
+                        sw.WriteLine(user.Value.xp);
+                        sw.WriteLine(user.Value.xpmax);
+                        sw.WriteLine(user.Value.cutecoins);
+                        sw.WriteLine("");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+        }
+
+        public void Load()
+        {
+            String line = "";
+
+            string path = @"C:\Users\Gaby\Documents\Test.txt";
+
+            try
+            {
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        ulong id = Convert.ToUInt64(sr.ReadLine());
+                        string username = sr.ReadLine();
+                        int lvl = Convert.ToInt32(sr.ReadLine());
+                        int xp = Convert.ToInt32(sr.ReadLine());
+                        int xpmax = Convert.ToInt32(sr.ReadLine());
+                        int cutecoins = Convert.ToInt32(sr.ReadLine());
+                        string useless = sr.ReadLine();
+
+                        User u = new User(id,username);
+                        u.lvl = lvl;
+                        u.xp = xp;
+                        u.xpmax = xpmax;
+                        u.cutecoins = cutecoins;
+
+                        UL.Add(id,u);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+        }
+
+
+
     }
 
 

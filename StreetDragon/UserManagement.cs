@@ -31,10 +31,7 @@ namespace StreetDragon
             int Rd = r.Next(1+lvl,1+lvl*2);
             int Rd2 = r2.Next(1,2+(lvl*2));
             int temp = Rd-(xpmax-xp);
-            if(lvl==1)
-                xpmax = 6;
-            if (lvl > 1)
-                xpmax = lvl^3;
+
             xp += Rd;
             cutecoins += Rd2;
             Console.WriteLine(userID +" "+ username + " " + xp + "/" + xpmax + " " + cutecoins+"CC");
@@ -42,6 +39,10 @@ namespace StreetDragon
             if (xp >= xpmax)
             {
                 lvl += 1;
+                if (lvl == 1)
+                    xpmax = 6;
+                if (lvl > 1)
+                    xpmax = lvl * lvl * lvl;
                 xp = 0;
                 xp += temp;
             }
