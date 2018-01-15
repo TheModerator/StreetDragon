@@ -15,17 +15,13 @@ namespace StreetDragon
     {
         static void Main(string[] args) => new Program().RunBotAsync().GetAwaiter().GetResult();
 
+        private Boolean countxp = false;
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
-        private List<User> UL = new List<User>();
+        public static Dictionary<ulong,User> UL = new Dictionary<ulong,User>();
         public static Dictionary<ulong, List<IMessage>> MessageCache = new Dictionary<ulong, List<IMessage>>();
      //  static public IEnumerable<IMessage> MessageCache;
-
-        internal List<User> UL1 {
-            get { return UL; }
-            set { UL = value; }
-            }
 
         public async Task RunBotAsync()
         {
@@ -61,20 +57,33 @@ namespace StreetDragon
 
         private async Task Exp(SocketMessage arg)
         {
+            SocketGuildUser user = (SocketGuildUser)arg.Author;
             Boolean hasFound = false;
-            foreach(User user in UL1)
+            foreach (var uID in Program.UL.Keys)
             {
-                if(user.userID == arg.Author.Id)
+                if (user.Id == uID)
                 {
                     hasFound = true;
-                    user.gainCoins();
+                    Console.WriteLine(" ");
+                    Console.WriteLine("hasFound = true");
                 }
             }
 
-            if(hasFound == false)
+            if (hasFound == false)
             {
-                User u = new User(arg.Author.Id, arg.Author.Username);
-                UL1.Add(u);
+                Console.WriteLine("HasFound = false");
+                User usr = new User(user.Id, user.Username);
+                UL.Add(user.Id, usr);
+            }
+
+            User u = UL[arg.Author.Id];
+            u.gainCoins();
+            if (u.xp >= u.xpmax)
+            {
+                Console.WriteLine("Level up!");
+                u.lvl += 1;
+                var channel = arg.Channel;
+                //await channel.SendMessageAsync($"{arg.Author.Mention} leveled up to level " + u.lvl + "!");
             }
         }
 
