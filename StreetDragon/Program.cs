@@ -51,14 +51,14 @@ namespace StreetDragon
 
             await _client.StartAsync();
 
-         //  MessageCache =  await _client.GetChannel.GetMessagesAsync(100000, Discord.CacheMode.AllowDownload).Flatten();
+            //  MessageCache =  await _client.GetChannel.GetMessagesAsync(100000, Discord.CacheMode.AllowDownload).Flatten();
+            Load();
 
             await Task.Delay(-1);
         }
 
         private async Task Exp(SocketMessage arg)
         {
-            Load();
             Save();
             SocketGuildUser user = (SocketGuildUser)arg.Author;
             Boolean hasFound = false;
@@ -78,9 +78,18 @@ namespace StreetDragon
                 User usr = new User(user.Id, user.Username);
                 UL.Add(user.Id, usr);
             }
-
             User u = UL[arg.Author.Id];
-            u.gainCoins();
+
+            DateTimeOffset a = arg.Timestamp;
+            TimeSpan ts = a.Subtract(u.ts);
+
+            if (ts.Minutes>=1)
+            {
+                u.gainCoins();
+                u.ts = a;
+            }
+            
+
             if (u.xp >= u.xpmax)
             {
                 u.lvl += 1;

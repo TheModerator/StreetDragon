@@ -17,6 +17,7 @@ namespace StreetDragon
         public int lvl = 0;
         public int xpmax = 5;
         public int cutecoins = 0;
+        public DateTimeOffset ts;
 
         public User(ulong userID, string username)
         {
