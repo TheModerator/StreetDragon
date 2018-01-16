@@ -16,7 +16,6 @@ namespace StreetDragon
     {
         static void Main(string[] args) => new Program().RunBotAsync().GetAwaiter().GetResult();
 
-        private Boolean countxp = false;
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
@@ -171,6 +170,7 @@ namespace StreetDragon
                         sw.WriteLine(user.Value.xp);
                         sw.WriteLine(user.Value.xpmax);
                         sw.WriteLine(user.Value.cutecoins);
+                        sw.WriteLine(user.Value.cookies);
                         sw.WriteLine("");
                     }
                 }
@@ -199,6 +199,7 @@ namespace StreetDragon
                         int xp = Convert.ToInt32(sr.ReadLine());
                         int xpmax = Convert.ToInt32(sr.ReadLine());
                         int cutecoins = Convert.ToInt32(sr.ReadLine());
+                        int cookies = Convert.ToInt32(sr.ReadLine());
                         string useless = sr.ReadLine();
 
                         User u = new User(id,username);
@@ -206,6 +207,7 @@ namespace StreetDragon
                         u.xp = xp;
                         u.xpmax = xpmax;
                         u.cutecoins = cutecoins;
+                        u.cookies = cookies;
 
                         UL.Add(id,u);
                     }

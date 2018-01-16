@@ -11,11 +11,20 @@ namespace StreetDragon.Modules
 {
     public class Stats : ModuleBase<SocketCommandContext>
     {
+        private User u;
         [Command("Stats"), Alias("stats")]
         [Summary("View your customer status!")]
-        public async Task stats()
+        public async Task stats(SocketGuildUser user = null)
         {
-            User u = Program.UL[Context.User.Id];
+            
+            if (user == null)
+            {
+                u = Program.UL[Context.User.Id];
+            }
+            else
+            {
+                u = Program.UL[user.Id];
+            }
 
             var builder = new EmbedBuilder()
             {
@@ -47,6 +56,13 @@ namespace StreetDragon.Modules
             {
                 x.Name = "CuteCoins :";
                 x.Value = u.cutecoins;
+                x.IsInline = true;
+            });
+
+            builder.AddField(x =>
+            {
+                x.Name = "Cookies :";
+                x.Value = u.cookies;
                 x.IsInline = false;
             });
 

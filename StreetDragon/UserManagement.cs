@@ -18,6 +18,7 @@ namespace StreetDragon
         public int xpmax = 5;
         public int cutecoins = 0;
         public DateTimeOffset ts;
+        public int cookies = 0;
 
         public User(ulong userID, string username)
         {
@@ -36,6 +37,24 @@ namespace StreetDragon
             xp += Rd;
             cutecoins += Rd2;
             Console.WriteLine(userID +" "+ username + " " + xp + "/" + xpmax + " " + cutecoins+"CC");
+
+            if (xp >= xpmax)
+            {
+                lvl += 1;
+                if (lvl == 1)
+                    xpmax = 6;
+                if (lvl > 1)
+                    xpmax = lvl * lvl * lvl;
+                xp = 0;
+                xp += temp;
+            }
+        }
+
+        public void gainXP(int nb)
+        {
+            int temp = nb - (xpmax - xp);
+            xp += nb;
+            Console.WriteLine(userID + " " + username + " " + xp + "/" + xpmax + " " + cutecoins + "CC");
 
             if (xp >= xpmax)
             {

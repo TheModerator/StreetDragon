@@ -11,15 +11,38 @@ namespace StreetDragon.Modules
     public class Cookie : ModuleBase<SocketCommandContext>
     {
         [Command("cookie"), Alias("Cookie")]
-        [Summary("Give a cookie to someone (defaults to yourself)!")]
+        [Summary("Give a cookie to someone (defaults to eating one yourself)!")]
         public async Task Cookies(SocketGuildUser user = null)
         {
+            User u = Program.UL[Context.User.Id];
+            
             if (user == null)
             {
-                await ReplyAsync($"*Gives a cookie to {Context.User.Mention}~!*");
-            } else
-            await ReplyAsync($"*Gives a cookie to {user.Mention}~!*");
-
+                if (u.cookies >= 1)
+                {
+                    u.cookies -= 1;
+                    u.gainXP(3);
+                    await ReplyAsync($"*{Context.User.Mention} ate a cookie~!*");
+                }
+                else
+                {
+                    await ReplyAsync($"But you don't have any cookie! Try getting one from the !shop .");
+                } 
+            }
+            else
+            {
+                if (u.cookies >= 1)
+                {
+                    User u2 = Program.UL[user.Id];
+                    u.cookies -= 1;
+                    u2.cookies += 1;
+                    await ReplyAsync($"*{Context.User.Mention} gives a cookie to {user.Mention}~!*");
+                }
+                else
+                {
+                    await ReplyAsync($"But you don't have any cookie! Try getting one from the !shop .");
+                }
+            }
         }
     }
 }
