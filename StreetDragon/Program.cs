@@ -152,6 +152,7 @@ namespace StreetDragon
             String line;
 
             string path = @"C:\Users\Gaby\Documents\Test.txt";
+            string path2 = @"C:\Users\Gaby\Documents\Backup.txt";
 
             try
             {
@@ -159,6 +160,7 @@ namespace StreetDragon
                 {
                     File.Delete(path);
                 }
+                
 
                 using (StreamWriter sw = new StreamWriter(path))
                 {
@@ -174,6 +176,26 @@ namespace StreetDragon
                         sw.WriteLine("");
                     }
                 }
+
+                if (File.Exists(path2))
+                {
+                    File.Delete(path2);
+                }
+
+                using (StreamWriter sw2 = new StreamWriter(path2))
+                {
+                    foreach (var user in UL)
+                    {
+                        sw2.WriteLine(user.Key);
+                        sw2.WriteLine(user.Value.username);
+                        sw2.WriteLine(user.Value.lvl);
+                        sw2.WriteLine(user.Value.xp);
+                        sw2.WriteLine(user.Value.xpmax);
+                        sw2.WriteLine(user.Value.cutecoins);
+                        sw2.WriteLine(user.Value.cookies);
+                        sw2.WriteLine("");
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -186,6 +208,8 @@ namespace StreetDragon
             String line = "";
 
             string path = @"C:\Users\Gaby\Documents\Test.txt";
+            string path2 = @"C:\Users\Gaby\Documents\Backup.txt";
+            Boolean success = true;
 
             try
             {
@@ -202,16 +226,45 @@ namespace StreetDragon
                         int cookies = Convert.ToInt32(sr.ReadLine());
                         string useless = sr.ReadLine();
 
-                        User u = new User(id,username);
+                        User u = new User(id, username);
                         u.lvl = lvl;
                         u.xp = xp;
                         u.xpmax = xpmax;
                         u.cutecoins = cutecoins;
                         u.cookies = cookies;
 
-                        UL.Add(id,u);
+                        UL.Add(id, u);
+
+                        if (UL.Count == 0) success = false;
                     }
                 }
+                if (success == false)
+                {
+                    using (StreamReader sr = new StreamReader(path2))
+                    {
+                        while (!sr.EndOfStream)
+                        {
+                            ulong id = Convert.ToUInt64(sr.ReadLine());
+                            string username = sr.ReadLine();
+                            int lvl = Convert.ToInt32(sr.ReadLine());
+                            int xp = Convert.ToInt32(sr.ReadLine());
+                            int xpmax = Convert.ToInt32(sr.ReadLine());
+                            int cutecoins = Convert.ToInt32(sr.ReadLine());
+                            int cookies = Convert.ToInt32(sr.ReadLine());
+                            string useless = sr.ReadLine();
+
+                            User u = new User(id, username);
+                            u.lvl = lvl;
+                            u.xp = xp;
+                            u.xpmax = xpmax;
+                            u.cutecoins = cutecoins;
+                            u.cookies = cookies;
+
+                            UL.Add(id, u);
+                        }
+                    }
+                }
+
             }
             catch (Exception e)
             {

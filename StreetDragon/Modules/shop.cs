@@ -17,7 +17,10 @@ namespace StreetDragon.Modules
         {
             if(choice!=null)
             choice = choice.ToLower();
+            if (nb < 1) nb = 1;
             User u = Program.UL[Context.User.Id];
+            Random r = new Random();
+            int r1 = r.Next(0, 100);
             DateTime DT = DateTime.UtcNow;
             int price = 0;
             int XP = 0;
@@ -40,81 +43,77 @@ namespace StreetDragon.Modules
                     x.IsInline = true;
                 });
 
-                if (DT.DayOfWeek == DayOfWeek.Monday)
+                switch (DT.DayOfWeek)
                 {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Monday";
-                        x.Value = "To help brave the start of a new week.\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
-                }
+                    case DayOfWeek.Monday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Monday";
+                            x.Value = "To help brave the start of a new week.\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
 
-                if (DT.DayOfWeek == DayOfWeek.Tuesday)
-                {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Tuesday";
-                        x.Value = "Because Tuesdays can also be tiring.\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
-                }
+                    case DayOfWeek.Tuesday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Tuesday";
+                            x.Value = "Because Tuesdays can also be tiring.\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
 
-                if (DT.DayOfWeek == DayOfWeek.Wednesday)
-                {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Wednesday";
-                        x.Value = "To celebrate the middle of the work week.\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
-                }
+                    case DayOfWeek.Wednesday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Wednesday";
+                            x.Value = "To celebrate the middle of the work week.\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
 
-                if (DT.DayOfWeek == DayOfWeek.Thursday)
-                {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Thursday";
-                        x.Value = "Because Thursdays can also be tiring.\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
-                }
+                    case DayOfWeek.Thursday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Thursday";
+                            x.Value = "Because Thursdays can also be tiring.\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
 
-                if (DT.DayOfWeek == DayOfWeek.Friday)
-                {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Friday";
-                        x.Value = "Hang in there, last day before weekend!\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
-                }
+                    case DayOfWeek.Friday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Friday";
+                            x.Value = "Hang in there, last day before weekend!\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
 
-                if (DT.DayOfWeek == DayOfWeek.Saturday)
-                {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Saturday";
-                        x.Value = "A good coffee for a good weekend.\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
-                }
+                    case DayOfWeek.Saturday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Saturday";
+                            x.Value = "A good coffee for a good weekend.\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
 
-                if (DT.DayOfWeek == DayOfWeek.Sunday)
-                {
-                    builder.AddField(x =>
-                    {
-                        x.Name = "Sunday";
-                        x.Value = "A fine coffee for a fine weekend.\n" +
-                        "25 CC | +10 XP";
-                        x.IsInline = true;
-                    });
+                    case DayOfWeek.Sunday:
+                        builder.AddField(x =>
+                        {
+                            x.Name = "Sunday";
+                            x.Value = "A fine coffee for a fine weekend.\n" +
+                            "25 CC | +10 XP";
+                            x.IsInline = true;
+                        });
+                        break;
                 }
 
                 if (u.lvl >= 5)
@@ -188,10 +187,17 @@ namespace StreetDragon.Modules
                         }
                         else
                         {
-                            await ReplyAsync($"Aww you don't have enough...Well whatever, here's one for free~");
                             b = false;
-                            u.cookies += 1;
-                            await ReplyAsync($"{Context.User.Mention} got 1 cookie!");
+                            if (r1 <= 5)
+                            {
+                                await ReplyAsync($"Aww you don't have enough...Well whatever, here's one for free~");
+                                u.cookies += 1;
+                                await ReplyAsync($"{Context.User.Mention} got 1 cookie!");
+                            }
+                            else
+                            {
+                                await ReplyAsync($"Aww you don't have enough...");
+                            }
                         }
                         break;
 
@@ -360,7 +366,7 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
-                    case "dreelicious cake":
+                    case "dreeliciouscake":
                         if (u.lvl >= 8)
                         {
                             price = 75 * nb;
@@ -381,9 +387,26 @@ namespace StreetDragon.Modules
                         if (u.lvl >= 10)
                         {
                             price = 100 * nb;
-                            if (u.cutecoins >= 100 * nb)
+                            if (u.cutecoins >= price)
                             {
                                 XP = 70 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "spongeyrock":
+                        if (u.lvl >= 15)
+                        {
+                            price = 200 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 150 * nb;
                             }
                             else
                             {
@@ -425,7 +448,13 @@ namespace StreetDragon.Modules
                                 b = false;
                             }
                         } else b = false;
-                        break;     
+                        break;
+
+                    default:
+                        b = false;
+                        a = false;
+                        await ReplyAsync("Sorry, we don't have that in store!");
+                        break;
                 }
                 
                 if (b == true)
@@ -440,6 +469,7 @@ namespace StreetDragon.Modules
                 {
                     if (nb > 1) choice += "s";
                     u.cookies += nb;
+                    u.cutecoins -= price;
                     await ReplyAsync($"{Context.User.Mention} got {nb} {choice}!");
                 }
             }
