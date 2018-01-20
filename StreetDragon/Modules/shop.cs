@@ -32,7 +32,7 @@ namespace StreetDragon.Modules
                 var builder = new EmbedBuilder()
                 {
                     Color = new Color(114, 137, 218),
-                    Description = "Please write '!shop' followed by the name of the article you'd like!"
+                    Description = "Please write '!shop' followed by the name of the article you'd like!\nAnd remove spaces in your order's name."
                 };
 
                 builder.AddField(x =>
@@ -149,7 +149,29 @@ namespace StreetDragon.Modules
                         x.IsInline = true;
                     });
                 }
-                
+
+                if (u.lvl >= 13)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Risen Cake";
+                        x.Value = "A cake that got a lot of yeast.\n" +
+                        "150 CC | +120 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 15)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Spongey Rock";
+                        x.Value = "A rock that can somehow be eaten.\n" +
+                        "200 CC | +150 XP";
+                        x.IsInline = true;
+                    });
+                }
+
                 if (u.lvl >= 20)
                 {
                     builder.AddField(x =>
@@ -160,7 +182,18 @@ namespace StreetDragon.Modules
                         x.IsInline = true;
                     });
                 }
-                
+
+                if (u.lvl >= 25)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Celestial Ocake";
+                        x.Value = "A simple, but charming cake that somehow makes you skilled.\n" +
+                        "400 CC | +380 XP";
+                        x.IsInline = true;
+                    });
+                }
+
                 if (u.lvl >= 30)
                 {
                     builder.AddField(x =>
@@ -400,6 +433,23 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
+                    case "risencake":
+                        if (u.lvl >= 13)
+                        {
+                            price = 150 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 120 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
                     case "spongeyrock":
                         if (u.lvl >= 15)
                         {
@@ -432,6 +482,24 @@ namespace StreetDragon.Modules
                             }
                         }else
                         b = false;
+                        break;
+
+                    case "celestialocake":
+                        if (u.lvl >= 25)
+                        {
+                            price = 400 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 380 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else
+                            b = false;
                         break;
 
                     case "mika mokka":

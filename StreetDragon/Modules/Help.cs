@@ -44,7 +44,7 @@ namespace StreetDragon.Modules
                     {
                         x.Name = name;
                         x.Value = description;
-                        x.IsInline = false;
+                        x.IsInline = true;
                     });
                 }
             }

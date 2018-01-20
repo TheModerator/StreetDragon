@@ -22,21 +22,18 @@ namespace StreetDragon.Modules
         }
 
         [Command("im"), Alias("IAm")]
-        [Summary("Does fancy science magic to turn into the specified customer!")]
         public async Task Immitate(SocketChannel selectedChannel = null)
         {
             Immitate(null, selectedChannel, "");
         }
 
         [Command("im"), Alias("IAm")]
-        [Summary("Does fancy science magic to turn into the specified customer!")]
         public async Task Immitate(SocketGuildUser user = null, SocketChannel selectedChannel = null)
         {
             Immitate(user, selectedChannel, "");
         }
 
-        [Command("im"), Alias("IAm")]
-        [Summary("Does fancy science magic to turn into the specified customer!")]
+        [Command("im"), Alias("IAm")]       
         public async Task Immitate(SocketGuildUser user = null, SocketChannel selectedChannel = null, String starter = "")
         {
             try { 

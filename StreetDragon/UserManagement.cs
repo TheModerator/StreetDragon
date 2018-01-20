@@ -19,6 +19,9 @@ namespace StreetDragon
         public int cutecoins = 0;
         public DateTimeOffset ts;
         public int cookies = 0;
+        public Boolean hasRequest = false;
+        public DateTime birthday = DateTime.MinValue;
+        public ulong guild = 0;
 
         public User(ulong userID, string username)
         {

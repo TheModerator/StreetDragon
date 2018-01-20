@@ -96,6 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="Modules\Birthday.cs" />
+    <Compile Include="Modules\ConfirmRequest.cs" />
     <Compile Include="Modules\e621.cs" />
     <Compile Include="Modules\im.cs" />
     <Compile Include="Modules\Cele.cs" />
@@ -103,6 +105,7 @@
     <Compile Include="Modules\Cookie.cs" />
     <Compile Include="Modules\Help.cs" />
     <Compile Include="Modules\Pet.cs" />
+    <Compile Include="Modules\Request.cs" />
     <Compile Include="Modules\Shop.cs" />
     <Compile Include="Modules\Stats.cs" />
     <Compile Include="Program.cs" />
@@ -129,6 +132,9 @@
     <Content Include="Images\Commish\werncomm.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Textfiles\Backup.txt" />
+    <Content Include="Textfiles\Requests.txt" />
+    <Content Include="Textfiles\Test.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

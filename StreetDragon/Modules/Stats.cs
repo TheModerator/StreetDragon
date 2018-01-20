@@ -63,7 +63,14 @@ namespace StreetDragon.Modules
             {
                 x.Name = "Cookies :";
                 x.Value = u.cookies;
-                x.IsInline = false;
+                x.IsInline = true;
+            });
+
+            builder.AddField(x =>
+            {
+                x.Name = "Birthday :";
+                x.Value = u.birthday.Day+"/"+u.birthday.Month;
+                x.IsInline = true;
             });
 
             await ReplyAsync("", false, builder.Build());

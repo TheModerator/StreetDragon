@@ -251,3 +251,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+/StreetDragon/Textfiles
+/StreetDragon/Textfiles/Backup.txt
+/StreetDragon/Textfiles/Requests.txt
+/StreetDragon/Textfiles
+*.txt

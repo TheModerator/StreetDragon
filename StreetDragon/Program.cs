@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace StreetDragon
 {
@@ -21,7 +22,10 @@ namespace StreetDragon
         private IServiceProvider _services;
         public static Dictionary<ulong,User> UL = new Dictionary<ulong,User>();
         public static Dictionary<ulong, List<IMessage>> MessageCache = new Dictionary<ulong, List<IMessage>>();
-     //  static public IEnumerable<IMessage> MessageCache;
+        public static Dictionary<ulong, SocketGuild> Servers = new Dictionary<ulong, SocketGuild>();
+        //  static public IEnumerable<IMessage> MessageCache;
+        public Timer timer = new Timer();
+        
 
         public async Task RunBotAsync()
         {
@@ -51,9 +55,30 @@ namespace StreetDragon
             await _client.StartAsync();
 
             //  MessageCache =  await _client.GetChannel.GetMessagesAsync(100000, Discord.CacheMode.AllowDownload).Flatten();
+            foreach (var server in _client.Guilds)
+            {
+                Servers.Add(server.Id, server);
+            }
             Load();
 
+
+            timer.Interval = 1000 * 60 * 60 * 24;
+            timer.Elapsed += birthday;
+
             await Task.Delay(-1);
+        }
+
+        private async void birthday(object sender, ElapsedEventArgs e)
+        {
+            foreach(var user in UL)
+            {
+                if (DateTime.UtcNow.Day == user.Value.birthday.Day && DateTime.UtcNow.Month == user.Value.birthday.Month)
+                {
+                    SocketGuild guild = Servers[user.Value.guild];
+                    var channel = guild.DefaultChannel;
+                    await channel.SendMessageAsync($"It is {user.Value.username}'s birthday today!");
+                }
+            }
         }
 
         private async Task Exp(SocketMessage arg)
@@ -75,10 +100,13 @@ namespace StreetDragon
             {
                 Console.WriteLine("HasFound = false");
                 User usr = new User(user.Id, user.Username);
+                var channel = arg.Channel as SocketGuildChannel;
+                usr.guild = channel.Guild.Id;
                 UL.Add(user.Id, usr);
+                
             }
-            User u = UL[arg.Author.Id];
 
+            User u = UL[arg.Author.Id];
             DateTimeOffset a = arg.Timestamp;
             TimeSpan ts = a.Subtract(u.ts);
 
@@ -118,7 +146,6 @@ namespace StreetDragon
             return Task.CompletedTask;
         }
 
-
         public async Task RegisterCommandsAsync()
         {
             _client.MessageReceived += HandleCommandAsync;
@@ -149,10 +176,8 @@ namespace StreetDragon
 
         public void Save()
         {
-            String line;
-
-            string path = @"C:\Users\Gaby\Documents\Test.txt";
-            string path2 = @"C:\Users\Gaby\Documents\Backup.txt";
+            string path = Config.SAVE;
+            string path2 = Config.SAVE2;
 
             try
             {
@@ -173,11 +198,14 @@ namespace StreetDragon
                         sw.WriteLine(user.Value.xpmax);
                         sw.WriteLine(user.Value.cutecoins);
                         sw.WriteLine(user.Value.cookies);
+                        sw.WriteLine(user.Value.hasRequest);
+                        sw.WriteLine(user.Value.guild);
+                        sw.WriteLine(user.Value.birthday);
                         sw.WriteLine("");
                     }
                 }
 
-                if (File.Exists(path2))
+                /*if (File.Exists(path2))
                 {
                     File.Delete(path2);
                 }
@@ -193,9 +221,12 @@ namespace StreetDragon
                         sw2.WriteLine(user.Value.xpmax);
                         sw2.WriteLine(user.Value.cutecoins);
                         sw2.WriteLine(user.Value.cookies);
+                        sw2.WriteLine(user.Value.hasRequest);
+                        sw.WriteLine(user.Value.guild);
+                        sw.WriteLine(user.Value.birthday);
                         sw2.WriteLine("");
                     }
-                }
+                }*/
             }
             catch (Exception e)
             {
@@ -205,10 +236,8 @@ namespace StreetDragon
 
         public void Load()
         {
-            String line = "";
-
-            string path = @"C:\Users\Gaby\Documents\Test.txt";
-            string path2 = @"C:\Users\Gaby\Documents\Backup.txt";
+            string path = Config.SAVE;
+            string path2 = Config.SAVE2;
             Boolean success = true;
 
             try
@@ -224,6 +253,9 @@ namespace StreetDragon
                         int xpmax = Convert.ToInt32(sr.ReadLine());
                         int cutecoins = Convert.ToInt32(sr.ReadLine());
                         int cookies = Convert.ToInt32(sr.ReadLine());
+                        Boolean request = Convert.ToBoolean(sr.ReadLine());
+                        ulong server = Convert.ToUInt64(sr.ReadLine());
+                        DateTime birthday = Convert.ToDateTime(sr.ReadLine());
                         string useless = sr.ReadLine();
 
                         User u = new User(id, username);
@@ -232,18 +264,21 @@ namespace StreetDragon
                         u.xpmax = xpmax;
                         u.cutecoins = cutecoins;
                         u.cookies = cookies;
-
+                        u.hasRequest = request;
+                        u.guild = server;
+                        u.birthday = birthday;
+                        
                         UL.Add(id, u);
 
                         if (UL.Count == 0) success = false;
                     }
                 }
-                if (success == false)
-                {
-                    using (StreamReader sr = new StreamReader(path2))
-                    {
-                        while (!sr.EndOfStream)
-                        {
+                 /*if (success == false)
+                 {
+                     using (StreamReader sr = new StreamReader(path2))
+                     {
+                         while (!sr.EndOfStream)
+                         {
                             ulong id = Convert.ToUInt64(sr.ReadLine());
                             string username = sr.ReadLine();
                             int lvl = Convert.ToInt32(sr.ReadLine());
@@ -251,6 +286,8 @@ namespace StreetDragon
                             int xpmax = Convert.ToInt32(sr.ReadLine());
                             int cutecoins = Convert.ToInt32(sr.ReadLine());
                             int cookies = Convert.ToInt32(sr.ReadLine());
+                            Boolean request = Convert.ToBoolean(sr.ReadLine());
+                            DateTime birthday = Convert.ToDateTime(sr.ReadLine());
                             string useless = sr.ReadLine();
 
                             User u = new User(id, username);
@@ -259,12 +296,13 @@ namespace StreetDragon
                             u.xpmax = xpmax;
                             u.cutecoins = cutecoins;
                             u.cookies = cookies;
+                            u.hasRequest = request;
+                            u.birthday = birthday;
 
                             UL.Add(id, u);
-                        }
-                    }
-                }
-
+                         }
+                     }
+                 }*/
             }
             catch (Exception e)
             {
