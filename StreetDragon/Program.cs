@@ -55,15 +55,12 @@ namespace StreetDragon
             await _client.StartAsync();
 
             //  MessageCache =  await _client.GetChannel.GetMessagesAsync(100000, Discord.CacheMode.AllowDownload).Flatten();
-            foreach (var server in _client.Guilds)
-            {
-                Servers.Add(server.Id, server);
-            }
             Load();
 
 
             timer.Interval = 1000 * 60 * 60 * 24;
             timer.Elapsed += birthday;
+            timer.Start();
 
             await Task.Delay(-1);
         }
@@ -76,7 +73,10 @@ namespace StreetDragon
                 {
                     SocketGuild guild = Servers[user.Value.guild];
                     var channel = guild.DefaultChannel;
-                    await channel.SendMessageAsync($"It is {user.Value.username}'s birthday today!");
+                    await channel.SendMessageAsync($"It is {user.Value.username}'s birthday today! The café wishes you a Happy birthday!");
+                    await channel.SendMessageAsync($"To celebrate, here is a free Mika Mokka!");
+                    await channel.SendMessageAsync($"{user.Value.username} got a Mika Mokka and gained 500 XP!");
+                    user.Value.gainXP(500);
                 }
             }
         }
@@ -86,6 +86,7 @@ namespace StreetDragon
             Save();
             SocketGuildUser user = (SocketGuildUser)arg.Author;
             Boolean hasFound = false;
+            var channel = arg.Channel as SocketGuildChannel;
             foreach (var uID in UL.Keys)
             {
                 if (user.Id == uID)
@@ -93,6 +94,7 @@ namespace StreetDragon
                     hasFound = true;
                     Console.WriteLine(" ");
                     Console.WriteLine("hasFound = true");
+                    Servers.Add(channel.Guild.Id, channel.Guild);
                 }
             }
 
@@ -100,8 +102,9 @@ namespace StreetDragon
             {
                 Console.WriteLine("HasFound = false");
                 User usr = new User(user.Id, user.Username);
-                var channel = arg.Channel as SocketGuildChannel;
+                
                 usr.guild = channel.Guild.Id;
+                
                 UL.Add(user.Id, usr);
                 
             }
@@ -120,7 +123,6 @@ namespace StreetDragon
             if (u.xp >= u.xpmax)
             {
                 u.lvl += 1;
-                var channel = arg.Channel;
                 //await channel.SendMessageAsync($"{arg.Author.Mention} leveled up to level " + u.lvl + "!");
             }
         }
