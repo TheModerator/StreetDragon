@@ -22,6 +22,7 @@ namespace StreetDragon
         public Boolean hasRequest = false;
         public DateTime birthday = DateTime.MinValue;
         public ulong guild = 0;
+        public Boolean hasBirthday = false;
 
         public User(ulong userID, string username)
         {

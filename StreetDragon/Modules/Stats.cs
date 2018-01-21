@@ -66,12 +66,25 @@ namespace StreetDragon.Modules
                 x.IsInline = true;
             });
 
-            builder.AddField(x =>
+            if (u.hasBirthday == true)
             {
-                x.Name = "Birthday :";
-                x.Value = u.birthday.Day+"/"+u.birthday.Month;
-                x.IsInline = true;
-            });
+                builder.AddField(x =>
+                {
+                    x.Name = "Birthday :";
+                    x.Value = u.birthday.Day + "/" + u.birthday.Month;
+                    x.IsInline = true;
+                });
+            }
+            else
+            {
+                builder.AddField(x =>
+                {
+                    x.Name = "Birthday :";
+                    x.Value = "Not set";
+                    x.IsInline = true;
+                });
+            }
+            
 
             await ReplyAsync("", false, builder.Build());
         }

@@ -69,15 +69,19 @@ namespace StreetDragon
         {
             foreach(var user in UL)
             {
-                if (DateTime.UtcNow.Day == user.Value.birthday.Day && DateTime.UtcNow.Month == user.Value.birthday.Month)
+                if (user.Value.hasBirthday == true)
                 {
-                    SocketGuild guild = Servers[user.Value.guild];
-                    var channel = guild.DefaultChannel;
-                    await channel.SendMessageAsync($"It is {user.Value.username}'s birthday today! The café wishes you a Happy birthday!");
-                    await channel.SendMessageAsync($"To celebrate, here is a free Mika Mokka!");
-                    await channel.SendMessageAsync($"{user.Value.username} got a Mika Mokka and gained 500 XP!");
-                    user.Value.gainXP(500);
+                    if (DateTime.UtcNow.Day == user.Value.birthday.Day && DateTime.UtcNow.Month == user.Value.birthday.Month)
+                    {
+                        SocketGuild guild = Servers[user.Value.guild];
+                        var channel = guild.DefaultChannel;
+                        await channel.SendMessageAsync($"It is {user.Value.username}'s birthday today! The café wishes you a happy birthday!");
+                        await channel.SendMessageAsync($"To celebrate, here is a free Mika Mokka!");
+                        await channel.SendMessageAsync($"{user.Value.username} got a Mika Mokka and gained 500 XP!");
+                        user.Value.gainXP(500);
+                    }
                 }
+                else user.Value.hasBirthday = true;
             }
         }
 
@@ -203,6 +207,7 @@ namespace StreetDragon
                         sw.WriteLine(user.Value.hasRequest);
                         sw.WriteLine(user.Value.guild);
                         sw.WriteLine(user.Value.birthday);
+                        sw.WriteLine(user.Value.hasBirthday);
                         sw.WriteLine("");
                     }
                 }
@@ -258,6 +263,7 @@ namespace StreetDragon
                         Boolean request = Convert.ToBoolean(sr.ReadLine());
                         ulong server = Convert.ToUInt64(sr.ReadLine());
                         DateTime birthday = Convert.ToDateTime(sr.ReadLine());
+                        Boolean hasb = Convert.ToBoolean(sr.ReadLine());
                         string useless = sr.ReadLine();
 
                         User u = new User(id, username);
@@ -269,6 +275,7 @@ namespace StreetDragon
                         u.hasRequest = request;
                         u.guild = server;
                         u.birthday = birthday;
+                        u.hasBirthday = hasb;
                         
                         UL.Add(id, u);
 

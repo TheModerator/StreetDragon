@@ -24,6 +24,7 @@ namespace StreetDragon.Modules
                     DateTime bd = new DateTime(Convert.ToInt32(birthd.Substring(4, 4)), Convert.ToInt32(birthd.Substring(2, 2)), Convert.ToInt32(birthd.Substring(0, 2)));
                     bd.ToString("dd/mm/yyyy");
                     u.birthday = bd;
+                    await ReplyAsync("Your birthday has been registered!");
                 }
                 catch (Exception e)
                 {
