@@ -87,6 +87,7 @@ namespace StreetDragon
 
         private async Task Exp(SocketMessage arg)
         {
+            try { 
             Save();
             SocketGuildUser user = (SocketGuildUser)arg.Author;
             Boolean hasFound = false;
@@ -98,7 +99,10 @@ namespace StreetDragon
                     hasFound = true;
                     Console.WriteLine(" ");
                     Console.WriteLine("hasFound = true");
-                    Servers.Add(channel.Guild.Id, channel.Guild);
+                    if (!Servers.ContainsKey(channel.Guild.Id))
+                    {
+                        Servers.Add(channel.Guild.Id, channel.Guild);
+                    }
                 }
             }
 
@@ -128,6 +132,11 @@ namespace StreetDragon
             {
                 u.lvl += 1;
                 //await channel.SendMessageAsync($"{arg.Author.Mention} leveled up to level " + u.lvl + "!");
+            }
+            }
+            catch (Exception ex)
+            {
+                arg.Channel.SendMessageAsync("```FUCKED UP\n Error encountered whilst handling EXP on message Rx\n" + ex.Message + "\n" + ex.StackTrace + "```");
             }
         }
 
@@ -182,8 +191,7 @@ namespace StreetDragon
 
         public void Save()
         {
-            string path = Config.SAVE;
-            string path2 = Config.SAVE2;
+            string path = Config.USER_FILE;
 
             try
             {
@@ -212,28 +220,7 @@ namespace StreetDragon
                     }
                 }
 
-                /*if (File.Exists(path2))
-                {
-                    File.Delete(path2);
-                }
-
-                using (StreamWriter sw2 = new StreamWriter(path2))
-                {
-                    foreach (var user in UL)
-                    {
-                        sw2.WriteLine(user.Key);
-                        sw2.WriteLine(user.Value.username);
-                        sw2.WriteLine(user.Value.lvl);
-                        sw2.WriteLine(user.Value.xp);
-                        sw2.WriteLine(user.Value.xpmax);
-                        sw2.WriteLine(user.Value.cutecoins);
-                        sw2.WriteLine(user.Value.cookies);
-                        sw2.WriteLine(user.Value.hasRequest);
-                        sw.WriteLine(user.Value.guild);
-                        sw.WriteLine(user.Value.birthday);
-                        sw2.WriteLine("");
-                    }
-                }*/
+               
             }
             catch (Exception e)
             {
@@ -243,8 +230,7 @@ namespace StreetDragon
 
         public void Load()
         {
-            string path = Config.SAVE;
-            string path2 = Config.SAVE2;
+            string path = Config.USER_FILE;
             Boolean success = true;
 
             try
@@ -282,36 +268,7 @@ namespace StreetDragon
                         if (UL.Count == 0) success = false;
                     }
                 }
-                 /*if (success == false)
-                 {
-                     using (StreamReader sr = new StreamReader(path2))
-                     {
-                         while (!sr.EndOfStream)
-                         {
-                            ulong id = Convert.ToUInt64(sr.ReadLine());
-                            string username = sr.ReadLine();
-                            int lvl = Convert.ToInt32(sr.ReadLine());
-                            int xp = Convert.ToInt32(sr.ReadLine());
-                            int xpmax = Convert.ToInt32(sr.ReadLine());
-                            int cutecoins = Convert.ToInt32(sr.ReadLine());
-                            int cookies = Convert.ToInt32(sr.ReadLine());
-                            Boolean request = Convert.ToBoolean(sr.ReadLine());
-                            DateTime birthday = Convert.ToDateTime(sr.ReadLine());
-                            string useless = sr.ReadLine();
-
-                            User u = new User(id, username);
-                            u.lvl = lvl;
-                            u.xp = xp;
-                            u.xpmax = xpmax;
-                            u.cutecoins = cutecoins;
-                            u.cookies = cookies;
-                            u.hasRequest = request;
-                            u.birthday = birthday;
-
-                            UL.Add(id, u);
-                         }
-                     }
-                 }*/
+                
             }
             catch (Exception e)
             {

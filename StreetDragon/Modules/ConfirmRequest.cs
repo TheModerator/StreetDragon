@@ -13,7 +13,7 @@ namespace StreetDragon.Modules
         [Command("cr"),Alias("crequest")]
         async Task cRequest(SocketGuildUser user = null)
         {
-            if (Context.User.Id == Config.ID)
+            if (Context.User.Id == Config.ADMIN_ID)
             {
                 if(user!= null)
                 {
