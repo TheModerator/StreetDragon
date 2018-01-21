@@ -16,7 +16,7 @@ namespace StreetDragon.Modules
         public async Task request(string character = null, string pose = null)
         {
             User u = Program.UL[Context.User.Id];
-            string path = Config.REUEST_FILE;
+            string path = Config.REQUEST_FILE;
 
             if (pose == null)
             {
