@@ -137,7 +137,17 @@ namespace StreetDragon.Modules
                         x.IsInline = true;
                     });
                 }
-               
+
+                if (u.lvl >= 9)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "JotaCola";
+                        x.Value = "Energetic drink!\n" +
+                        "80 CC | +60 XP";
+                        x.IsInline = true;
+                    });
+                }
 
                 if (u.lvl >= 10)
                 {
@@ -146,6 +156,17 @@ namespace StreetDragon.Modules
                         x.Name = "CapuSeanno";
                         x.Value = "Known to have an artistic taste.\n" +
                         "100 CC | +70 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 12)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Tiramiju";
+                        x.Value = "An adorable tiramisu.\n" +
+                        "125 CC | +100 XP";
                         x.IsInline = true;
                     });
                 }
@@ -161,13 +182,68 @@ namespace StreetDragon.Modules
                     });
                 }
 
+                if (u.lvl >= 14)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Macaronix";
+                        x.Value = "Big black macarons!\n" +
+                        "175 CC | +140 XP";
+                        x.IsInline = true;
+                    });
+                }
+
                 if (u.lvl >= 15)
                 {
                     builder.AddField(x =>
                     {
-                        x.Name = "Spongey Rock";
-                        x.Value = "A rock that can somehow be eaten.\n" +
+                        x.Name = "Sponge Rocher";
+                        x.Value = "A nice .\n" +
                         "200 CC | +150 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 16)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Dr.Keeper";
+                        x.Value = "A drink that make you wanna fly.\n" +
+                        "210 CC | +170 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 17)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Moenster";
+                        x.Value = "A big muenster.\n" +
+                        "225 CC | +185 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 18)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Modka";
+                        x.Value = "A beverage you will remember.\n" +
+                        "230 CC | +195 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 19)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Kuroissant";
+                        x.Value = "A black croissant.\n" +
+                        "250 CC | +200 XP";
                         x.IsInline = true;
                     });
                 }
@@ -176,9 +252,42 @@ namespace StreetDragon.Modules
                 {
                     builder.AddField(x =>
                     {
-                        x.Name = "Latti";
+                        x.Name = "Azure Latti";
                         x.Value = "Tonic like a flying dragon\n" +
                         "300 CC | +330 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 21)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Marbriatto";
+                        x.Value = "A cute salami.\n" +
+                        "325 CC | +340 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 22)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Soulami";
+                        x.Value = "A cute salami.\n" +
+                        "350 CC | +345 XP";
+                        x.IsInline = true;
+                    });
+                }
+
+                if (u.lvl >= 23)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Mizotto";
+                        x.Value = "A badass risotto.\n" +
+                        "375 CC | +365 XP";
                         x.IsInline = true;
                     });
                 }
@@ -187,8 +296,8 @@ namespace StreetDragon.Modules
                 {
                     builder.AddField(x =>
                     {
-                        x.Name = "Celestial Ocake";
-                        x.Value = "A simple, but charming cake that somehow makes you skilled.\n" +
+                        x.Name = "Ocake";
+                        x.Value = "A simple, but charming cake that somehow makes you git gud.\n" +
                         "400 CC | +380 XP";
                         x.IsInline = true;
                     });
@@ -416,6 +525,23 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
+                    case "jotacola":
+                        if (u.lvl >= 9)
+                        {
+                            price = 80 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 60 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
                     case "capuseanno":
                         if (u.lvl >= 10)
                         {
@@ -423,6 +549,23 @@ namespace StreetDragon.Modules
                             if (u.cutecoins >= price)
                             {
                                 XP = 70 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "tiramiju":
+                        if (u.lvl >= 12)
+                        {
+                            price = 125 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 100 * nb;
                             }
                             else
                             {
@@ -450,7 +593,24 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
-                    case "spongeyrock":
+                    case "macaronix":
+                        if (u.lvl >= 14)
+                        {
+                            price = 175 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 140 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "spongerocher":
                         if (u.lvl >= 15)
                         {
                             price = 200 * nb;
@@ -467,7 +627,75 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
-                    case "latti":
+                    case "Dr.Keeper":
+                        if (u.lvl >= 16)
+                        {
+                            price = 210 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 170 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "moenster":
+                        if (u.lvl >= 17)
+                        {
+                            price = 225 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 185 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "modka":
+                        if (u.lvl >= 18)
+                        {
+                            price = 230 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 195 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "kuroissant":
+                        if (u.lvl >= 19)
+                        {
+                            price = 250 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 200 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else b = false;
+                        break;
+
+                    case "azurelatti":
                         if (u.lvl >= 20)
                         {
                             price = 300 * nb;
@@ -484,7 +712,61 @@ namespace StreetDragon.Modules
                         b = false;
                         break;
 
-                    case "celestialocake":
+                    case "marbriatto":
+                        if (u.lvl >= 21)
+                        {
+                            price = 325 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 340 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else
+                            b = false;
+                        break;
+
+                    case "soulami":
+                        if (u.lvl >= 22)
+                        {
+                            price = 350 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 345 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else
+                            b = false;
+                        break;
+
+                    case "mizotto":
+                        if (u.lvl >= 23)
+                        {
+                            price = 375 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 365 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else
+                            b = false;
+                        break;
+
+                    case "ocake":
                         if (u.lvl >= 25)
                         {
                             price = 400 * nb;

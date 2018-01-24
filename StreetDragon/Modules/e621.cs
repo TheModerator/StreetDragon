@@ -143,7 +143,7 @@ namespace StreetDragon.Modules
                 request.AutomaticDecompression = DecompressionMethods.GZip;
                 DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(List<E6_SHOW_RESP>));
                 request.UserAgent ="StreetDragon 0.666 (Discord Bot)";
-                request.Timeout = 2000;
+                request.Timeout = 5000;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 List<E6_SHOW_RESP> p2 = (List<E6_SHOW_RESP>)ser.ReadObject(stream);

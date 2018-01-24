@@ -105,6 +105,7 @@
     <Compile Include="Modules\Cookie.cs" />
     <Compile Include="Modules\Help.cs" />
     <Compile Include="Modules\Pet.cs" />
+    <Compile Include="Modules\Picarto.cs" />
     <Compile Include="Modules\Request.cs" />
     <Compile Include="Modules\Shop.cs" />
     <Compile Include="Modules\Stats.cs" />
