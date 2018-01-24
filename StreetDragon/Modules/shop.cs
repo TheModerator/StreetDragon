@@ -264,7 +264,7 @@ namespace StreetDragon.Modules
                     builder.AddField(x =>
                     {
                         x.Name = "Marbriatto";
-                        x.Value = "A cute salami.\n" +
+                        x.Value = "A feminine aura emanates from this coffee.\n" +
                         "325 CC | +340 XP";
                         x.IsInline = true;
                     });
@@ -292,13 +292,24 @@ namespace StreetDragon.Modules
                     });
                 }
 
+                if (u.lvl >= 24)
+                {
+                    builder.AddField(x =>
+                    {
+                        x.Name = "Unusual Hammich";
+                        x.Value = "A hammich like you've never seen before.\n" +
+                        "390 CC | +380 XP";
+                        x.IsInline = true;
+                    });
+                }
+
                 if (u.lvl >= 25)
                 {
                     builder.AddField(x =>
                     {
                         x.Name = "Ocake";
                         x.Value = "A simple, but charming cake that somehow makes you git gud.\n" +
-                        "400 CC | +380 XP";
+                        "420 CC | +400 XP";
                         x.IsInline = true;
                     });
                 }
@@ -627,7 +638,7 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
-                    case "Dr.Keeper":
+                    case "dr.Keeper":
                         if (u.lvl >= 16)
                         {
                             price = 210 * nb;
@@ -766,13 +777,31 @@ namespace StreetDragon.Modules
                             b = false;
                         break;
 
-                    case "ocake":
-                        if (u.lvl >= 25)
+                    case "unusualhammich":
+                        if (u.lvl >= 24)
                         {
-                            price = 400 * nb;
+                            price = 390 * nb;
                             if (u.cutecoins >= price)
                             {
                                 XP = 380 * nb;
+                            }
+                            else
+                            {
+                                await ReplyAsync($"You need at least {price} CuteCoins to get that!");
+                                b = false;
+                            }
+                        }
+                        else
+                            b = false;
+                        break;
+
+                    case "ocake":
+                        if (u.lvl >= 25)
+                        {
+                            price = 420 * nb;
+                            if (u.cutecoins >= price)
+                            {
+                                XP = 400 * nb;
                             }
                             else
                             {
