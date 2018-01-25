@@ -25,8 +25,8 @@ namespace StreetDragon
         public static Dictionary<ulong, SocketGuild> Servers = new Dictionary<ulong, SocketGuild>();
         //  static public IEnumerable<IMessage> MessageCache;
         public Timer timer = new Timer();
-        
 
+        public static Random globalRandom = new Random();
         public async Task RunBotAsync()
         {
             _client = new DiscordSocketClient();
