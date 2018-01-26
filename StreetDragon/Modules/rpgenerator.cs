@@ -15,7 +15,7 @@ namespace StreetDragon.Modules
 
 
         [Command("rp"), Alias("rp")]
-        public async Task Immitate()
+        public async Task generateRP()
         {
             try
             {
@@ -173,13 +173,15 @@ namespace StreetDragon.Modules
         public String GenerateTopic()
         {
 
-            double choice = Program.globalRandom.NextDouble() * (nsfw_sentences.Length - 1);
+           
             String sentence;
             if (Context.Channel.IsNsfw)
             {
+                double choice = Program.globalRandom.NextDouble() * (nsfw_sentences.Length - 1);
                 sentence = nsfw_sentences[Convert.ToInt16(choice)];
             }else
             {
+                double choice = Program.globalRandom.NextDouble() * (sentences.Length - 1);
                 sentence = sentences[Convert.ToInt16(choice)];
             }
 
