@@ -155,7 +155,7 @@ namespace StreetDragon.Modules
                     {
                         x.Name = "CapuSeanno";
                         x.Value = "Known to have an artistic taste.\n" +
-                        "100 CC | +70 XP";
+                        "100 CC | +80 XP";
                         x.IsInline = true;
                     });
                 }
@@ -198,7 +198,7 @@ namespace StreetDragon.Modules
                     builder.AddField(x =>
                     {
                         x.Name = "Sponge Rocher";
-                        x.Value = "A nice .\n" +
+                        x.Value = "A nice treat.\n" +
                         "200 CC | +150 XP";
                         x.IsInline = true;
                     });
@@ -559,7 +559,7 @@ namespace StreetDragon.Modules
                             price = 100 * nb;
                             if (u.cutecoins >= price)
                             {
-                                XP = 70 * nb;
+                                XP = 80 * nb;
                             }
                             else
                             {
@@ -638,7 +638,7 @@ namespace StreetDragon.Modules
                         else b = false;
                         break;
 
-                    case "dr.Keeper":
+                    case "dr.keeper":
                         if (u.lvl >= 16)
                         {
                             price = 210 * nb;
