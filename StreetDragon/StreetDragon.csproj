@@ -99,6 +99,7 @@
     <Compile Include="Modules\Birthday.cs" />
     <Compile Include="Modules\ConfirmRequest.cs" />
     <Compile Include="Modules\e621.cs" />
+    <Compile Include="Modules\Minigames.cs" />
     <Compile Include="Modules\rpgenerator.cs" />
     <Compile Include="Modules\im.cs" />
     <Compile Include="Modules\Cele.cs" />

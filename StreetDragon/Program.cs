@@ -20,11 +20,14 @@ namespace StreetDragon
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
-        public static Dictionary<ulong,User> UL = new Dictionary<ulong,User>();
+        public static Dictionary<ulong, User> UL = new Dictionary<ulong, User>();
         public static Dictionary<ulong, List<IMessage>> MessageCache = new Dictionary<ulong, List<IMessage>>();
         public static Dictionary<ulong, SocketGuild> Servers = new Dictionary<ulong, SocketGuild>();
         //  static public IEnumerable<IMessage> MessageCache;
         public Timer timer = new Timer();
+        public Boolean isCoinflip = false;
+
+
 
         public static Random globalRandom = new Random();
         public async Task RunBotAsync()
@@ -38,15 +41,15 @@ namespace StreetDragon
                 .AddSingleton(_commands)
                 .BuildServiceProvider();
 
-           
+
 
             //event subscription
             _client.Log += Log;
             _client.MessageReceived += Exp;
             _client.UserJoined += AnnounceUserJoined;
             _client.UserLeft += AnnounceUserLeft;
-            
-            
+
+
 
             await RegisterCommandsAsync();
 
@@ -67,7 +70,7 @@ namespace StreetDragon
 
         private async void birthday(object sender, ElapsedEventArgs e)
         {
-            foreach(var user in UL)
+            foreach (var user in UL)
             {
                 if (user.Value.hasBirthday == true)
                 {
@@ -87,56 +90,57 @@ namespace StreetDragon
 
         private async Task Exp(SocketMessage arg)
         {
-            try { 
-            Save();
-            SocketGuildUser user = (SocketGuildUser)arg.Author;
-            Boolean hasFound = false;
-            var channel = arg.Channel as SocketGuildChannel;
-            foreach (var uID in UL.Keys)
+            try
             {
-                if (user.Id == uID)
+                Save();
+                SocketGuildUser user = (SocketGuildUser)arg.Author;
+                Boolean hasFound = false;
+                var channel = arg.Channel as SocketGuildChannel;
+                foreach (var uID in UL.Keys)
                 {
-                    hasFound = true;
-                    Console.WriteLine(" ");
-                    Console.WriteLine("hasFound = true");
-                    if (!Servers.ContainsKey(channel.Guild.Id))
+                    if (user.Id == uID)
                     {
-                        Servers.Add(channel.Guild.Id, channel.Guild);
+                        hasFound = true;
+                        Console.WriteLine(" ");
+                        Console.WriteLine("hasFound = true");
+                        if (!Servers.ContainsKey(channel.Guild.Id))
+                        {
+                            Servers.Add(channel.Guild.Id, channel.Guild);
+                        }
                     }
                 }
-            }
 
-            if (hasFound == false)
-            {
-                Console.WriteLine("HasFound = false");
-                User usr = new User(user.Id, user.Username);
-                
-                usr.guild = channel.Guild.Id;
-                
-                UL.Add(user.Id, usr);
-                
-            }
+                if (hasFound == false)
+                {
+                    Console.WriteLine("HasFound = false");
+                    User usr = new User(user.Id, user.Username);
 
-            User u = UL[arg.Author.Id];
-            DateTimeOffset a = arg.Timestamp;
-            TimeSpan ts = a.Subtract(u.ts);
+                    usr.guild = channel.Guild.Id;
 
-            if (ts.Minutes>=1)
-            {
-                u.gainCoins();
-                u.ts = a;
-            }
-            
+                    UL.Add(user.Id, usr);
 
-            if (u.xp >= u.xpmax)
-            {
-                u.lvl += 1;
-                //await channel.SendMessageAsync($"{arg.Author.Mention} leveled up to level " + u.lvl + "!");
-            }
+                }
+
+                User u = UL[arg.Author.Id];
+                DateTimeOffset a = arg.Timestamp;
+                TimeSpan ts = a.Subtract(u.ts);
+
+                if (ts.Minutes >= 1)
+                {
+                    u.gainCoins();
+                    u.ts = a;
+                }
+
+
+                if (u.xp >= u.xpmax)
+                {
+                    u.lvl += 1;
+                    //await channel.SendMessageAsync($"{arg.Author.Mention} leveled up to level " + u.lvl + "!");
+                }
             }
             catch (Exception ex)
             {
-                arg.Channel.SendMessageAsync("```FUCKED UP\n Error encountered whilst handling EXP on message Rx\n" + ex.Message + "\n" + ex.StackTrace + "```");
+                await arg.Channel.SendMessageAsync("```FUCKED UP\n Error encountered whilst handling EXP on message Rx\n" + ex.Message + "\n" + ex.StackTrace + "```");
             }
         }
 
@@ -151,7 +155,7 @@ namespace StreetDragon
         {
             var guild = user.Guild;
             var channel = guild.DefaultChannel;
-            await channel.SendMessageAsync($"Welcome to Mika's Mokka Lounge, {user.Mention}! This is the café of cuteness and art. We hope you'll enjoy your stay here!" );
+            await channel.SendMessageAsync($"Welcome to Mika's Mokka Lounge, {user.Mention}! This is the café of cuteness and art. We hope you'll enjoy your stay here!");
         }
 
         private Task Log(LogMessage arg)
@@ -176,7 +180,7 @@ namespace StreetDragon
 
             int argPos = 0;
 
-            if(message.HasStringPrefix("!", ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
+            if (message.HasStringPrefix("!", ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 var context = new SocketCommandContext(_client, message);
 
@@ -199,7 +203,7 @@ namespace StreetDragon
                 {
                     File.Delete(path);
                 }
-                
+
 
                 using (StreamWriter sw = new StreamWriter(path))
                 {
@@ -220,7 +224,7 @@ namespace StreetDragon
                     }
                 }
 
-               
+
             }
             catch (Exception e)
             {
@@ -262,13 +266,13 @@ namespace StreetDragon
                         u.guild = server;
                         u.birthday = birthday;
                         u.hasBirthday = hasb;
-                        
+
                         UL.Add(id, u);
 
                         if (UL.Count == 0) success = false;
                     }
                 }
-                
+
             }
             catch (Exception e)
             {
@@ -276,10 +280,6 @@ namespace StreetDragon
             }
         }
 
-
-
     }
-
-
 
 }

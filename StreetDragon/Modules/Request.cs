@@ -12,7 +12,7 @@ namespace StreetDragon.Modules
     public class Request : ModuleBase<SocketCommandContext>
     {
         [Command("request"),Alias("Request")]
-        [Summary("Request a drawing (Costs 5000 CC each)")]
+        [Summary("Request a drawing (Costs 10000 CC each)")]
         public async Task request(string character = null, string pose = null)
         {
             User u = Program.UL[Context.User.Id];
@@ -23,7 +23,7 @@ namespace StreetDragon.Modules
                 var builder = new EmbedBuilder()
                 {
                     Color = new Color(255,242,0),
-                    Description = "To get a request, type following this model :\n '!request character pose'\n Each request costs 5000 CC, and you can only have one request on hold at once."
+                    Description = "To get a request, type following this model :\n '!request character pose'\n Each request costs 10000 CC, and you can only have one request on hold at once."
                 };
 
                 await ReplyAsync("", false, builder.Build());
@@ -37,7 +37,7 @@ namespace StreetDragon.Modules
                 }
                 else
                 {
-                    if (u.cutecoins >= 5000)
+                    if (u.cutecoins >= 10000)
                     {
                         try
                         {

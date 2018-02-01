@@ -254,7 +254,7 @@ namespace StreetDragon.Modules
                     {
                         x.Name = "Azure Latti";
                         x.Value = "Tonic like a flying dragon\n" +
-                        "300 CC | +330 XP";
+                        "300 CC | +290 XP";
                         x.IsInline = true;
                     });
                 }
@@ -265,7 +265,7 @@ namespace StreetDragon.Modules
                     {
                         x.Name = "Marbriatto";
                         x.Value = "A feminine aura emanates from this coffee.\n" +
-                        "325 CC | +340 XP";
+                        "325 CC | +315 XP";
                         x.IsInline = true;
                     });
                 }
@@ -276,7 +276,7 @@ namespace StreetDragon.Modules
                     {
                         x.Name = "Soulami";
                         x.Value = "A cute salami.\n" +
-                        "350 CC | +345 XP";
+                        "350 CC | +340 XP";
                         x.IsInline = true;
                     });
                 }
@@ -285,7 +285,7 @@ namespace StreetDragon.Modules
                 {
                     builder.AddField(x =>
                     {
-                        x.Name = "Mizotto";
+                        x.Name = "Mizzotto";
                         x.Value = "A badass risotto.\n" +
                         "375 CC | +365 XP";
                         x.IsInline = true;
@@ -309,7 +309,7 @@ namespace StreetDragon.Modules
                     {
                         x.Name = "Ocake";
                         x.Value = "A simple, but charming cake that somehow makes you git gud.\n" +
-                        "420 CC | +400 XP";
+                        "420 CC | +410 XP";
                         x.IsInline = true;
                     });
                 }
@@ -712,7 +712,7 @@ namespace StreetDragon.Modules
                             price = 300 * nb;
                             if (u.cutecoins >= price)
                             {
-                                XP = 330 * nb;
+                                XP = 290 * nb;
                             }
                             else
                             {
@@ -729,7 +729,7 @@ namespace StreetDragon.Modules
                             price = 325 * nb;
                             if (u.cutecoins >= price)
                             {
-                                XP = 340 * nb;
+                                XP = 315 * nb;
                             }
                             else
                             {
@@ -747,7 +747,7 @@ namespace StreetDragon.Modules
                             price = 350 * nb;
                             if (u.cutecoins >= price)
                             {
-                                XP = 345 * nb;
+                                XP = 340 * nb;
                             }
                             else
                             {
@@ -759,7 +759,7 @@ namespace StreetDragon.Modules
                             b = false;
                         break;
 
-                    case "mizotto":
+                    case "mizzotto":
                         if (u.lvl >= 23)
                         {
                             price = 375 * nb;
@@ -801,7 +801,7 @@ namespace StreetDragon.Modules
                             price = 420 * nb;
                             if (u.cutecoins >= price)
                             {
-                                XP = 400 * nb;
+                                XP = 410 * nb;
                             }
                             else
                             {
