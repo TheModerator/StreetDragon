@@ -14,7 +14,7 @@ namespace StreetDragon.Modules
     {
 
 
-        [Command("rp"), Alias("rp")]
+        [Command("rp"), Alias("Rp")]
         public async Task generateRP()
         {
             try

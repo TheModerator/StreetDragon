@@ -10,9 +10,10 @@ namespace StreetDragon.Modules
     public class Coinflip : ModuleBase<SocketCommandContext>
     {
         [Command("coinflip"), Alias("cf")]
-        [Summary("Use as follows : !coinflip choice currency nb \n choice = heads or tails \n currency = CC or cookies \n nb = quantity you wanna bet")]
+        [Summary("Use as follows : !coinflip currency nb\n currency = CC or cookies \n nb = quantity you wanna bet")]
         public async Task coinflip(string currency, int nb = 1)
         {
+            currency = currency.ToLower();
             if (nb < 1) nb = 1;
             User u = Program.UL[Context.User.Id];
             int limit = (int)((20 * u.cutecoins) / 100);

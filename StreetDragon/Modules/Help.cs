@@ -15,7 +15,7 @@ namespace StreetDragon.Modules
         }
 
         [Command("help"),Alias("Help")]
-        [Summary("The command you just called : displays help.")]
+        [Summary("This command displays help.")]
         public async Task HelpAsync()
         {
             var builder = new EmbedBuilder()
@@ -33,7 +33,7 @@ namespace StreetDragon.Modules
                     var result = await cmd.CheckPreconditionsAsync(Context);
                     if (result.IsSuccess)
                     {
-                        name += $"!{module.Name}/!{cmd.Aliases.ElementAt(1)}";
+                        name += $"!{cmd.Name}";    ///!{cmd.Aliases.ElementAt(1)}
                         description += $"{cmd.Summary}\n";
                     }   
                 }
