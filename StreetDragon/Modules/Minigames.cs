@@ -9,13 +9,13 @@ namespace StreetDragon.Modules
 {
     public class Coinflip : ModuleBase<SocketCommandContext>
     {
-        [Command("coinflip"),Alias("cf")]
+        [Command("coinflip"), Alias("cf")]
         [Summary("Use as follows : !coinflip choice currency nb \n choice = heads or tails \n currency = CC or cookies \n nb = quantity you wanna bet")]
-        public async Task coinflip(string currency,int nb = 1)
+        public async Task coinflip(string currency, int nb = 1)
         {
             if (nb < 1) nb = 1;
             User u = Program.UL[Context.User.Id];
-            int limit = (int)((20*u.cutecoins)/100);
+            int limit = (int)((20 * u.cutecoins) / 100);
 
             if (currency == "cc" || currency == "cookies")
             {
@@ -36,7 +36,7 @@ namespace StreetDragon.Modules
                     if (ran <= 50)
                     {
                         await Context.Channel.SendMessageAsync($"...and won! This means they win double!");
-                        if(currency == "cc")
+                        if (currency == "cc")
                             u.cutecoins += nb;
                         else
                             u.cookies += nb;
@@ -54,11 +54,21 @@ namespace StreetDragon.Modules
                             await Context.Channel.SendMessageAsync($"...and lost! This means they lose their bet cookies...");
                             u.cookies -= nb;
                         }
-                        
+
                     }
                 }
-                
+
             }
+        }
+    }
+
+    public class Hangman : ModuleBase<SocketCommandContext>
+    {
+        [Command("hangman"),Alias("hm")]
+        [Summary("Does nothing yet roflmao")]
+        public async Task hangman()
+        {
+
         }
     }
 }
