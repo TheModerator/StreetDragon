@@ -65,11 +65,13 @@ namespace StreetDragon.Modules
         String[] fluid = new String[] { "air", "cum", "helium", "water", "love nectar" };
         String[] cock_action = new String[] { "throb", "cum", "pulse", "grow", "swell" };
 
+        String[] furry_emote = new String[] { "owo", "OwO", "^_^", "^^", "O.o", "ovo", "xD" };
 
 
         String[] nsfw_sentences = new String[]{ "a [nsfw_adjective] [species] [wants|needs] to be [fucked|sucked|mounted|raped|taken] by a {submissive|dominating} [species] with a [size] {width} [cock_type] [cock].",
                                                 "whilst exploring [place], a {large_modifier} [nsfw_adjective] [species] encounters [number] [species]s that are more than willing to use their [cock_type] [cock]s to help out.",
                                                 "just how [size] can a [species]'s [cock] get? [patron] finds out.",
+                                                "[notices|sees|wubbs|tickles|nuzzles] ur [bulge|fur|tail|chest|paws|feets|] *[furry_emote] [pounces|gasps|awooo|wuts this?]*",
                                                 "a [itemised_adjective] [obj] inflates a {personified_adjective} [species] full of [fluid], and now his {size} [cock] is [cock_action]ing.",
                                                 "a [species] with a [size] [cock] wakes up to find his {cock_type} [cock] is now a [size], [width] [cock]. He decides to try it out on a [nsfw_adjective] [species]",
                                                 "[cock_type] [cock]s are well known to be made to [cock_action] just from being [touched|breathed on|licked|exposed|noticed] by a [species]... ",
