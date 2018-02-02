@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StreetDragon.Modules
 {
-    public class Picarto
+    class Picarto
     {
         public async Task getOnline()
         {
